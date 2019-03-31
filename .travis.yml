@@ -1,0 +1,25 @@
+sudo: required
+services:
+  - docker
+
+# Build a docker image for running the required tests on React App 
+before_install:
+  - docker build -t xaniapaliou/react-test -f ./client/Dockerfile.dev ./client
+
+# Set up a container to run the tests for the React App
+script:
+  - docker run xaniapaliou/react-test npm test -- --coverage
+
+# Tests have succesfully marked as passed, move on to build production images
+after_success:
+  - docker build -t xaniapaliou/multi-client ./client
+  - docker build -t xaniapaliou/multi-nginx ./nginx
+  - docker build -t xaniapaliou/multi-server ./server
+  - docker build -t xaniapaliou/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push xaniapaliou/multi-client
+  - docker push xaniapaliou/multi-nginx
+  - docker push xaniapaliou/multi-server
+  - docker push xaniapaliou/multi-worker
