@@ -17,7 +17,7 @@ services:
       context: ./server
     volumes: 
       - /app/node_modules
-      - /c/Users/xania/Documents/projects/React/complex/server:/app
+      - ~/Documents/projects/React/complex/server:/app
     environment: 
       - REDIS_HOST=redis
       - REDIS_PORT=6379
@@ -32,14 +32,14 @@ services:
       context: ./client
     volumes:
       - /app/node_modules
-      - /c/Users/xania/Documents/projects/React/complex/client:/app    
+      - ~/Documents/projects/React/complex/client:/app    
   worker:
     build:
       dockerfile: Dockerfile.dev
       context: ./worker
     volumes: 
       - /app/node_modules
-      - /c/Users/xania/Documents/projects/React/complex/worker:/app
+      - ~/Documents/projects/React/complex/worker:/app
     environment: 
       - REDIS_HOST=redis
       - REDIS_PORT=6379
